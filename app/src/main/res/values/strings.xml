@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MC\'s Quiz</string>
+    <string name="already_has_account_login_here">Already has account! Login here</string>
+    <string name="new_to_twitter_register_here">Register here</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register_new_account">Register New Account</string>
+    <string name="login">Login</string>
+    <string name="play_quiz">PLAY QUIZ</string>
+    <string name="statistics">STATISTICS</string>
+    <string name="request_subject">REQUEST SUBJECT</string>
+    <string name="rate_amp_feedback"><![CDATA[RATE & FEEDBACK]]></string>
+    <string name="mc_apos_s_quiz">MC\'s Quiz</string>
+    <string name="requested_subject">Requested Subject</string>
+    <string name="why_this_subject">Why this subject?</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="rate_mc_apos_s_quiz">Rate MC\'s Quiz</string>
+    <string name="comments">Comments:</string>
+    <string name="type_your_comments_here">Type your comments here…</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="guest_login">Guest Login</string>
+    <string name="enter_password">Enter password…</string>
+    <string name="enter_username">Enter username…</string>
+    <string name="question_1_10">Question 1/10</string>
+    <string name="best_category">Best Category</string>
+    <string name="best_score">Best Score</string>
+    <string name="_1">1.</string>
+    <string name="_2">2.</string>
+    <string name="_3">3.</string>
+    <string name="_4">4.</string>
+    <string name="_5">5.</string>
+    <string name="enter_email_address">Enter email address…</string>
+    <string name="null_string">null</string>
+    <string name="enter_requested_subject">Enter requested subject...</string>
+    <string name="state_here_why_this_subject">State here why this subject...</string>
+</resources>
