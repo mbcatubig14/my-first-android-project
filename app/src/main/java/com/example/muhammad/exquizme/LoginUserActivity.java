@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 public class LoginUserActivity extends AppCompatActivity {
 
-    static final String USER_NAME = "USER_NAME";
+
     private static final String LOGIN_URL = "http://mbcatubig.net16.net/ExQuiz%20Me/Login.php";
 
     private EditText editTextUserName;
@@ -69,8 +69,8 @@ public class LoginUserActivity extends AppCompatActivity {
     }
 
     private void loginUser(final QuizUser user) {
-        final String username = user.username;
-        String password = user.password;
+        final String username = user.getUsername();
+        String password = user.getPassword();
 
         class LoginUser extends AsyncTask<String, Void, String> {
             ProgressDialog loading;
@@ -104,9 +104,9 @@ public class LoginUserActivity extends AppCompatActivity {
                 data.put("quiz_username", params[0]);
                 data.put("quiz_userpassword", params[1]);
 
-                RegisterUserRequest ruc = new RegisterUserRequest();
+                RegisterUserRequest registerUserRequest = new RegisterUserRequest();
 
-                return ruc.sendPostRequest(LOGIN_URL, data);
+                return registerUserRequest.sendPostRequest(LOGIN_URL, data);
             }
         }
         LoginUser ulc = new LoginUser();

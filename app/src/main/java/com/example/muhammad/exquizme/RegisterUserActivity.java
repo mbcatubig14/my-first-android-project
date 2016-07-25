@@ -58,10 +58,10 @@ public class RegisterUserActivity extends AppCompatActivity {
     }
 
     private void register(QuizUser user) {
-        String quizUsername = user.username, quizPassword = user.password, quizEmail = user.email;
+        String quizUsername = user.getUsername(), quizPassword = user.getPassword(), quizEmail = user.getEmail();
         class RegisterUser extends AsyncTask<String, Void, String> {
-            ProgressDialog loading;
             final RegisterUserRequest ruc = new RegisterUserRequest();
+            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {

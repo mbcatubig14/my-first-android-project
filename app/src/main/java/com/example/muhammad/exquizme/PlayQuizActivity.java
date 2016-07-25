@@ -29,12 +29,12 @@ import java.util.List;
 public class PlayQuizActivity extends AppCompatActivity {
 
     private static final String QUESTION_MANAGER_URL = "http://mbcatubig.net16.net/ExQuiz%20Me/Quiz_Manager.php";
+    private final List<String> categories = new ArrayList<>(10);
     private ArrayList<Integer> randomNumberList;
     private int randomIndex, questionIndex = 1;
     private SQLiteDatabaseHelper questionDatabase;
     private RadioButton choiceBtnA, choiceBtnB, choiceBtnC, choiceBtnD;
     private TextView questionTextView, qIndexView;
-    private final List<String> categories = new ArrayList<>(10);
     private int score = 0;
 
     @Override
@@ -119,12 +119,12 @@ public class PlayQuizActivity extends AppCompatActivity {
         if (questionDatabase.getQuestions().size() != 0) {//If database is not empty
             //Play the questions until the index of 10
             if (questionIndex <= 10) {
-                String question = questionDatabase.getQuestions().get(randomIndex).question; //this causes the error
+                String question = questionDatabase.getQuestions().get(randomIndex).getQuestion(); //this causes the error
                 String[] choices = new String[4];
-                choices[0] = questionDatabase.getQuestions().get(randomIndex).choices[0];
-                choices[1] = questionDatabase.getQuestions().get(randomIndex).choices[1];
-                choices[2] = questionDatabase.getQuestions().get(randomIndex).choices[2];
-                choices[3] = questionDatabase.getQuestions().get(randomIndex).choices[3];
+                choices[0] = questionDatabase.getQuestions().get(randomIndex).getChoices()[0];
+                choices[1] = questionDatabase.getQuestions().get(randomIndex).getChoices()[1];
+                choices[2] = questionDatabase.getQuestions().get(randomIndex).getChoices()[2];
+                choices[3] = questionDatabase.getQuestions().get(randomIndex).getChoices()[3];
 
                 questionTextView.setText(question);
                 choiceBtnA.setText(choices[0]);
@@ -157,22 +157,8 @@ public class PlayQuizActivity extends AppCompatActivity {
                     intent.putExtra("score", "You scored " + score + "%/100!!");
                     intent.putExtra("username", username);
                     intent.putExtra("best_score", score + "");
-                    //Finding best category
-                    int count = 1, tempCount;
-                    String bestCategory = categories.get(0);
-                    String tempCategory;
-                    for (int i = 0; i < (categories.size() - 1); i++) {
-                        tempCategory = categories.get(i);
-                        tempCount = 0;
-                        for (int j = 1; j < categories.size(); j++) {
-                            if (tempCategory.equals(categories.get(j)))
-                                tempCount++;
-                        }
-                        if (tempCount > count) {
-                            bestCategory = tempCategory;
-                            count = tempCount;
-                        }
-                    }
+                    String bestCategory = findBestCategory();
+
                     intent.putExtra("best_category", bestCategory); //It's from here.
                     startActivity(intent);
                 }
@@ -180,12 +166,33 @@ public class PlayQuizActivity extends AppCompatActivity {
         }
     }
 
+    private String findBestCategory() {
+        //Finding best category
+        int count = 1, tempCount;
+        String bestCategory = categories.get(0);
+        String tempCategory;
+        for (int i = 0; i < (categories.size() - 1); i++) {
+            tempCategory = categories.get(i);
+            tempCount = 0;
+            for (int j = 1; j < categories.size(); j++) {
+                if (tempCategory.equals(categories.get(j)))
+                    tempCount++;
+            }
+            if (tempCount > count) {
+                bestCategory = tempCategory;
+                count = tempCount;
+            }
+        }
+        return bestCategory;
+    }
+
     private void checkAnswers(int index) {
-        String answer = questionDatabase.getQuestions().get(randomIndex).choices[index], correctAnswer = questionDatabase.getQuestions().get(randomIndex).answer;
+        String answer = questionDatabase.getQuestions().get(randomIndex).getChoices()[index],
+                correctAnswer = questionDatabase.getQuestions().get(randomIndex).getAnswer();
         if (answer.equals(correctAnswer)) {
             score += 10;
             //Start adding categories here
-            categories.add(questionDatabase.getQuestions().get(randomIndex).category);
+            categories.add(questionDatabase.getQuestions().get(randomIndex).getCategory());
             //Show message
             Toast.makeText(PlayQuizActivity.this, "Correct", Toast.LENGTH_SHORT).show();
             final Handler handler = new Handler();
@@ -209,7 +216,10 @@ public class PlayQuizActivity extends AppCompatActivity {
 
     private void getJSONFromURL() {
         class QuestionExtractorTask extends AsyncTask<Void, Void, String> {
-            private static final String ROOT_OBJECT = "questions", QUESTION = "question", CHOICES = "choices", CATEGORY = "category";
+            private static final String ROOT_OBJECT = "questions",
+                    QUESTION = "question",
+                    CHOICES = "choices",
+                    CATEGORY = "category";
             ProgressDialog loading;
 
             @Override

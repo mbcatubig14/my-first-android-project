@@ -51,13 +51,13 @@ class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         //Insert in question table
         ContentValues values = new ContentValues();
-        values.put("question", questions.question);
-        values.put("choice_a", questions.choices[0]);
-        values.put("choice_b", questions.choices[1]);
-        values.put("choice_c", questions.choices[2]);
-        values.put("choice_d", questions.choices[3]);
-        values.put("answer", questions.answer);
-        values.put("category", questions.category);
+        values.put("question", questions.getQuestion());
+        values.put("choice_a", questions.getChoices()[0]);
+        values.put("choice_b", questions.getChoices()[1]);
+        values.put("choice_c", questions.getChoices()[2]);
+        values.put("choice_d", questions.getChoices()[3]);
+        values.put("answer", questions.getAnswer());
+        values.put("category", questions.getCategory());
 
         // Inserting Row
         db.insert(TABLES[0], null, values);
