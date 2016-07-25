@@ -264,25 +264,30 @@ public class PlayQuizActivity extends AppCompatActivity {
 
                         String[] choices = new String[4];
                         JSONObject theQuestionObject = questions.getJSONObject(counter + "");
-                        String question = theQuestionObject.getString(QUESTION), category = theQuestionObject.getString(CATEGORY), correctAnswer = "";
+                        String question = theQuestionObject.getString(QUESTION),
+                                category = theQuestionObject.getString(CATEGORY), correctAnswer = "";
 
                         JSONArray theChoicesArray = theQuestionObject.getJSONArray(CHOICES);
                         //Get choice object from the choices object
-                        for (int i = 0; i < theChoicesArray.length(); i++) {
-                            JSONObject choiceObject = theChoicesArray.getJSONObject(i);
-                            choices[i] = choiceObject.optString("choice");
-                            if (choiceObject.getInt("is_correct_choice") == 1) {
-                                correctAnswer = choices[i];
-                            }
-                        }
-                        //add in SQLite Database
-                        questionDatabase.addQuestion(new QuizQuestion(question, choices, correctAnswer, category));
+                        extractChoices(questionDatabase, choices, question, category, correctAnswer, theChoicesArray);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 displayQuestion();
                 loading.dismiss();
+            }
+
+            private void extractChoices(SQLiteDatabaseHelper questionDatabase, String[] choices, String question, String category, String correctAnswer, JSONArray theChoicesArray) throws JSONException {
+                for (int i = 0; i < theChoicesArray.length(); i++) {
+                    JSONObject choiceObject = theChoicesArray.getJSONObject(i);
+                    choices[i] = choiceObject.optString("choice");
+                    if (choiceObject.getInt("is_correct_choice") == 1) {
+                        correctAnswer = choices[i];
+                    }
+                }
+                //add in SQLite Database
+                questionDatabase.addQuestion(new QuizQuestion(question, choices, correctAnswer, category));
             }
         }
         QuestionExtractorTask questionExtractorTask = new QuestionExtractorTask();
