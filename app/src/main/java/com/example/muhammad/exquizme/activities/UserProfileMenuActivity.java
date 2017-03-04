@@ -1,4 +1,4 @@
-package com.example.muhammad.exquizme;
+package com.example.muhammad.exquizme.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.muhammad.exquizme.R;
 
 public class UserProfileMenuActivity extends AppCompatActivity {
 

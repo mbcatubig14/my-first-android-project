@@ -9,7 +9,7 @@
     <string name="register_new_account">Register New Account</string>
     <string name="login">Login</string>
     <string name="play_quiz">PLAY QUIZ</string>
-    <string name="statistics">STATISTICS</string>
+    <string name="activity">STATISTICS</string>
     <string name="request_subject">REQUEST SUBJECT</string>
     <string name="rate_amp_feedback"><![CDATA[RATE & FEEDBACK]]></string>
     <string name="mc_apos_s_quiz">MC\'s Quiz</string>

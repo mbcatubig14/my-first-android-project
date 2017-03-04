@@ -1,4 +1,4 @@
-package com.example.muhammad.exquizme;
+package com.example.muhammad.exquizme.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,10 +9,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.muhammad.exquizme.R;
+import com.example.muhammad.exquizme.SQLiteDatabaseHelper;
+import com.example.muhammad.exquizme.WebRequestURLConstants;
+import com.example.muhammad.exquizme.asynctasks.QuestionExtractor;
+import com.example.muhammad.exquizme.entities.QuizQuestion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +35,6 @@ import java.util.List;
 
 public class PlayQuizActivity extends AppCompatActivity {
 
-    private static final String QUESTION_MANAGER_URL = "http://mbcatubig.net16.net/ExQuiz%20Me/Quiz_Manager.php";
     private final List<String> categories = new ArrayList<>(10);
     private ArrayList<Integer> randomNumberList;
     private int randomIndex, questionIndex = 1;
@@ -101,7 +107,7 @@ public class PlayQuizActivity extends AppCompatActivity {
         }
     }
 
-    private void displayQuestion() {
+    public void displayQuestion() {
         qIndexView.setText("QUESTION " + questionIndex + "/10");
         //questionDatabase = new SQLiteDatabaseHelper(this);
 
@@ -109,7 +115,9 @@ public class PlayQuizActivity extends AppCompatActivity {
             randomNumberList.add(index);
         }
         Collections.shuffle(randomNumberList);
-        randomIndex = randomNumberList.get(questionIndex - 1);
+        if (randomNumberList.size() != 0)
+            randomIndex = randomNumberList.get(questionIndex - 1);
+        Log.d("randomIndex", randomIndex + "");
 
         choiceBtnA.setChecked(false);
         choiceBtnB.setChecked(false);
@@ -215,82 +223,8 @@ public class PlayQuizActivity extends AppCompatActivity {
     }
 
     private void getJSONFromURL() {
-        class QuestionExtractorTask extends AsyncTask<Void, Void, String> {
-            private static final String ROOT_OBJECT = "questions",
-                    QUESTION = "question",
-                    CHOICES = "choices",
-                    CATEGORY = "category";
-            ProgressDialog loading;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(PlayQuizActivity.this, "Loading question...", null, true, true);
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-
-                BufferedReader bufferedReader;
-                try {
-                    URL url = new URL(QUESTION_MANAGER_URL);
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    StringBuilder sb = new StringBuilder();
-
-                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-                    String json;
-                    while ((json = bufferedReader.readLine()) != null) {
-                        sb.append(json).append("\n");
-                    }
-                    json = sb.toString().trim();
-
-                    return json;
-
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(String jsonData) {
-                super.onPostExecute(jsonData);
-                try {
-                    //Get the questions object
-                    JSONObject questions = new JSONObject(jsonData).getJSONObject(ROOT_OBJECT);
-                    SQLiteDatabaseHelper questionDatabase = new SQLiteDatabaseHelper(getApplicationContext());
-                    //Get the questions' objects
-                    for (int counter = 1; counter <= questions.length(); counter++) {
-
-                        String[] choices = new String[4];
-                        JSONObject theQuestionObject = questions.getJSONObject(counter + "");
-                        String question = theQuestionObject.getString(QUESTION),
-                                category = theQuestionObject.getString(CATEGORY), correctAnswer = "";
-
-                        JSONArray theChoicesArray = theQuestionObject.getJSONArray(CHOICES);
-                        //Get choice object from the choices object
-                        extractChoices(questionDatabase, choices, question, category, correctAnswer, theChoicesArray);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                displayQuestion();
-                loading.dismiss();
-            }
-
-            private void extractChoices(SQLiteDatabaseHelper questionDatabase, String[] choices, String question, String category, String correctAnswer, JSONArray theChoicesArray) throws JSONException {
-                for (int i = 0; i < theChoicesArray.length(); i++) {
-                    JSONObject choiceObject = theChoicesArray.getJSONObject(i);
-                    choices[i] = choiceObject.optString("choice");
-                    if (choiceObject.getInt("is_correct_choice") == 1) {
-                        correctAnswer = choices[i];
-                    }
-                }
-                //add in SQLite Database
-                questionDatabase.addQuestion(new QuizQuestion(question, choices, correctAnswer, category));
-            }
-        }
-        QuestionExtractorTask questionExtractorTask = new QuestionExtractorTask();
+        QuestionExtractor questionExtractorTask = new QuestionExtractor(PlayQuizActivity.this);
         questionExtractorTask.execute();
     }
 }

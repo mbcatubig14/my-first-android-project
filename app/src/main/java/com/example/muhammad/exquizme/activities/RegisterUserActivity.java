@@ -1,4 +1,4 @@
-package com.example.muhammad.exquizme;
+package com.example.muhammad.exquizme.activities;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -10,11 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.muhammad.exquizme.PostRequestHandler;
+import com.example.muhammad.exquizme.R;
+import com.example.muhammad.exquizme.WebRequestURLConstants;
+import com.example.muhammad.exquizme.entities.QuizUser;
+import com.example.muhammad.exquizme.asynctasks.RegisterUser;
+
 import java.util.HashMap;
 
 public class RegisterUserActivity extends AppCompatActivity {
 
-    private static final String REGISTER_URL = "http://mbcatubig.net16.net/ExQuiz%20Me/Register.php";
     private EditText editTextUsername;
     private EditText editTextPassword;
     private EditText editTextEmail;
@@ -59,41 +64,9 @@ public class RegisterUserActivity extends AppCompatActivity {
 
     private void register(QuizUser user) {
         String quizUsername = user.getUsername(), quizPassword = user.getPassword(), quizEmail = user.getEmail();
-        class RegisterUser extends AsyncTask<String, Void, String> {
-            final RegisterUserRequest ruc = new RegisterUserRequest();
-            ProgressDialog loading;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(RegisterUserActivity.this, "Please Wait", null, true, true);
-            }
 
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                if (s.equalsIgnoreCase("Successfully registered")) {
-                    Toast.makeText(RegisterUserActivity.this, s, Toast.LENGTH_LONG).show();
-                    finish();
-                } else {
-                    Toast.makeText(RegisterUserActivity.this, s, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-
-                HashMap<String, String> userDataParameters = new HashMap<>();
-                userDataParameters.put("quiz_username", params[0]);
-                userDataParameters.put("quiz_userpassword", params[1]);
-                userDataParameters.put("quiz_useremail", params[2]);
-
-                return ruc.sendPostRequest(REGISTER_URL, userDataParameters);
-            }
-        }
-
-        RegisterUser ru = new RegisterUser();
+        RegisterUser ru = new RegisterUser(RegisterUserActivity.this);
         ru.execute(quizUsername, quizPassword, quizEmail);
     }
 

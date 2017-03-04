@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Muhammad
@@ -15,11 +16,10 @@ $questions_results = array();
 
 encode_result($questions_query_result);
 
-function encode_result($result)
-{
-    //$response = array();
+function encode_result($result) {
+
     $questions = array();
-    //$choices = array();
+
     while ($r = mysqli_fetch_array($result)) {
         $key = $r['quiz_question_id']; // key here that is unique to the question and this will group them in that segment of the array.
         if (!isset($questions[$key])) {
@@ -34,9 +34,8 @@ function encode_result($result)
         //on the next iteration, the key is the same so we only do this part
         //and append that rows choices to the previous data using $key to match the question
         $questions[$key]['choices'][] = array('quiz_choice_id' => $r['quiz_choice_id'], 'choice' => $r['choice'], 'is_correct_choice' => $r['is_correct_choice']);
-
     }
-    echo json_encode(array("questions"=>$questions));
+    echo json_encode(array("questions" => $questions));
 }
 
 mysqli_close($con);

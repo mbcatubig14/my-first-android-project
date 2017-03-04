@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.muhammad.exquizme.entities.QuizQuestion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,13 @@ import java.util.List;
  * This class handles the local SQLite database for storing the questions generated from the web server.
  * Created by Muhammad on 19/04/2016.
  */
-class SQLiteDatabaseHelper extends SQLiteOpenHelper {
+public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String[] TABLES = new String[]{"question", "scores", "stats"};
+
+    public static SQLiteDatabaseHelper createSQLiteDbHelper(Context context){
+       return new SQLiteDatabaseHelper(context);
+    }
 
     public SQLiteDatabaseHelper(Context context) {
         super(context, "QUESTION_DATABASE", null, 1);

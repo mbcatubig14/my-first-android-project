@@ -1,4 +1,4 @@
-package com.example.muhammad.exquizme;
+package com.example.muhammad.exquizme.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.muhammad.exquizme.R;
 
 public class RequestSubjectActivity extends AppCompatActivity {
 

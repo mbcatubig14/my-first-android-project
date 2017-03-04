@@ -1,5 +1,7 @@
 package com.example.muhammad.exquizme;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -18,8 +20,9 @@ import javax.net.ssl.HttpsURLConnection;
  * This handles the post request to the URL where the remote server is.
  * Created by Muhammad on 19/04/2016.
  */
-class RegisterUserRequest {
-    public String sendPostRequest(String requestURL, HashMap<String, String> postDataParams) {
+public class PostRequestHandler {
+    public static String sendPostRequest(String requestURL, HashMap<String, String> postDataParams) {
+        Log.d("requestURL", requestURL);
         URL url;
         String response = "";
         try {
@@ -54,7 +57,7 @@ class RegisterUserRequest {
         return response;
     }
 
-    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+    private static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, String> entry : params.entrySet()) {

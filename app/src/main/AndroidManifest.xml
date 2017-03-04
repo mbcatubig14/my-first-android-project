@@ -12,18 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".LoginUserActivity">
+        <activity android:name=".activities.LoginUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterUserActivity" />
-        <activity android:name=".UserProfileMenuActivity" />
-        <activity android:name=".PlayQuizActivity" />
-        <activity android:name=".StatisticsActivity" />
-        <activity android:name=".RequestSubjectActivity" />
-        <activity android:name=".RateAndFeedbackActivity" />
+        <activity android:name=".activities.RegisterUserActivity" />
+        <activity android:name=".activities.UserProfileMenuActivity" />
+        <activity android:name=".activities.PlayQuizActivity" />
+        <activity android:name=".activities.StatisticsActivity" />
+        <activity android:name=".activities.RequestSubjectActivity" />
+        <activity android:name=".activities.RateAndFeedbackActivity" />
 
     </application>
 
